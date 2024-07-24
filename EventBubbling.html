@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Bubbling</title>
+  </head>
+  <style>
+    body {
+      background-color: black;
+    }
+
+    div {
+      min-height: 100px;
+      min-width: 100px;
+      padding: 30px;
+      border: 1px solid rgb(41, 41, 41);
+    }
+
+    #great-grant-parent {
+      background-color: rgb(243, 243, 161);
+    }
+
+    #grant-parent {
+      background-color: rgb(243, 161, 161);
+    }
+
+    #parent {
+      background-color: rgb(161, 243, 161);
+    }
+
+    #child {
+      background-color: rgb(161, 161, 243);
+    }
+
+    #category {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+    }
+
+    #category li {
+      display: block;
+      cursor: pointer;
+      height: 100px;
+      min-width: 100px;
+      width: 100%;
+      margin: 0 20px 10px;
+      background-color: aquamarine;
+      color: rgb(41, 13, 13);
+      border-radius: 5px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 600;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <body>
+    <div id="great-grant-parent">
+      <div id="grant-parent">
+        <div id="parent">
+          <div id="child"></div>
+        </div>
+      </div>
+    </div>
+
+    <ul id="category">
+      <li id="laptop">Laptops</li>
+      <li id="computer">Computers</li>
+      <li id="mobile">Mobile</li>
+      <li id="tablets">Tablets</li>
+    </ul>
+
+    <input type="text" name="name" id="name" data-uppercase />
+
+    <script src="event_bubbling.js"></script>
+  </body>
+</html>
