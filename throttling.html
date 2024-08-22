@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Throttling</title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .box {
+      height: 100vh;
+      width: 100%;
+    }
+
+    .red {
+      background-color: rgb(224, 94, 94);
+    }
+
+    .green {
+      background-color: rgb(94, 224, 94);
+    }
+
+    .blue {
+      background-color: rgb(94, 94, 224);
+    }
+  </style>
+  <body>
+    <div class="box red"></div>
+    <div class="box green"></div>
+    <div class="box blue"></div>
+    <div class="box red"></div>
+    <div class="box green"></div>
+    <div class="box blue"></div>
+    <div class="box red"></div>
+    <div class="box green"></div>
+    <div class="box blue"></div>
+    <div class="box red"></div>
+    <div class="box green"></div>
+    <div class="box blue"></div>
+    <script src="./throttling.js"></script>
+  </body>
+</html>
