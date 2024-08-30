@@ -433,3 +433,41 @@ console.log(markEmployee);
 markEmployee.empDetails();
 markEmployee.empSalary();
 markEmployee.calcAge();
+
+/**
+ * Inheritance using Object.create()
+ */
+// blueprint for Animal
+const PersonObjectCreate = {
+  calcAge() {
+    console.log(`Age: ${new Date().getFullYear() - this.birthYear}`);
+  },
+  personInit(name, gender, birthYear) {
+    this.name = name;
+    this.gender = gender;
+    this.birthYear = birthYear;
+  },
+};
+
+const EmployeeObjectCreate = Object.create(PersonObjectCreate);
+EmployeeObjectCreate.employeeInit = function (
+  name,
+  gender,
+  birthYear,
+  empId,
+  salary
+) {
+  EmployeeObjectCreate.personInit.call(this, name, gender, birthYear);
+  this.empId = empId;
+  this.salary = salary;
+};
+
+// EmployeeObjectCreate.employeeInit("John", "Male", 1990, 1000);
+
+const markEmployeeObject = Object.create(EmployeeObjectCreate);
+
+markEmployeeObject.employeeInit("Mark", "Male", 1990, 10012, 1000);
+
+console.log(markEmployeeObject);
+
+markEmployeeObject.calcAge();
