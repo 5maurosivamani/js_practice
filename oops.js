@@ -124,5 +124,51 @@ console.log(
 // why it is important?
 const arr = [10, 20, 30, 40];
 // this arr created by new Array constructor
-console.log(arr)
+console.log(arr);
 // all the array methods are presented in prototype of Array constructor
+
+/*
+  Class & Class Constructor
+
+  what is class in javascript?
+
+  Class in javascript to allow to create a blueprint and based on
+  the blueprint we can instantiate Objects.
+
+  Classes in javascript are different from other traditional classes
+  in other object oriented languages like java and c++.
+
+  Classes are Syntactic sugar of function constructor and 
+  Prototypal inheritance. It is not a new concept in itself. 
+*/
+
+// Javascript classes are created by two ways
+// class declaration -> class Person { ... }
+// class expression -> const Person = class { ... }
+
+class PersonClass {
+  constructor(name, gender, birthYear) {
+    this.name = name;
+    this.gender = gender;
+    this.birthYear = birthYear;
+  }
+  calculateAge() {
+    const age = 2024 - this.birthYear;
+    console.log(`${this.name} - Age: ${age}`);
+  }
+}
+
+// explicitly inherit the greet function
+PersonClass.prototype.greet = function () {
+  console.log(`Hello, ${this.name}!`);
+};
+
+const johnClass = new PersonClass("John", "Male", 1978);
+console.log(johnClass);
+johnClass.calculateAge();
+johnClass.greet();
+
+// Remember:-
+// 1.classes doesn't hoisted
+// 2.classes are a first class citizens
+// 3.classes are executed in strict mode
