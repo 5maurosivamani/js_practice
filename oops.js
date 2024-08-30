@@ -342,3 +342,55 @@ markBluePrint.init("Mark", "Male", 1996);
 
 console.log(markBluePrint);
 markBluePrint.calculateAge();
+
+/**
+ * Inherits between function constructors
+ */
+// Parent function constructor
+function Member(name, gender, birthYear) {
+  this.name = name;
+  this.gender = gender;
+  this.birthYear = birthYear;
+}
+
+Member.prototype.calculateAge = function () {
+  const age = new Date().getFullYear() - this.birthYear;
+  console.log(`Member Name: ${this.name} - Age: ${age}`);
+  return age;
+};
+
+const johnMember = new Member("John", "Male", 1996);
+
+console.log(johnMember);
+johnMember.calculateAge();
+
+// child function constructor
+function Employee(name, gender, birthYear, salary) {
+  // Member(name, gender, birthYear) Regular function call
+  // this keyword point to global window object
+  Member.call(this, name, gender, birthYear);
+  this.salary = salary;
+}
+
+Employee.prototype = Member.prototype;
+// Employee.prototype = Object.create(Member.prototype);
+
+Employee.prototype.calculateSalary = function () {
+  console.log(`Employee Name: ${this.name} - Salary: ${this.salary * 12}`);
+};
+
+Employee.prototype.empDetails = function () {
+  console.log(
+    `Employee Name: ${this.name} - Gender: ${
+      this.gender
+    } - Age: ${this.calculateAge()}`
+  );
+};
+
+const RameshEmployee = new Employee("Ramesh", "Male", 1996, 1000);
+
+console.log(RameshEmployee);
+
+RameshEmployee.calculateSalary();
+RameshEmployee.empDetails();
+RameshEmployee.calculateAge();
