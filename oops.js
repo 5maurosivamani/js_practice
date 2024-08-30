@@ -288,7 +288,7 @@ const johnFunctionConstructor = new PersonFunctionConstructor(
 console.log(johnFunctionConstructor);
 
 PersonFunctionConstructor.greet();
-johnFunctionConstructor.greet();
+// johnFunctionConstructor.greet();
 
 // build in static methods in js
 /**
@@ -296,3 +296,49 @@ johnFunctionConstructor.greet();
  * Number.isNaN()
  * Array.from()
  */
+
+/**
+ * Object.create() used to create prototypal inheritance
+ *
+ */
+const PersonBluePrint = {
+  calculateAge() {
+    const age = new Date().getFullYear() - this.birthYear;
+    console.log(`${this.name} - Age: ${age}`);
+  },
+
+  greet() {
+    console.log(`Have a nice day!`);
+  },
+
+  init(name, gender, birthYear) {
+    this.name = name;
+    this.birthYear = birthYear;
+    this.gender = gender;
+  },
+};
+
+const johnBluePrint = Object.create(PersonBluePrint);
+johnBluePrint.name = "John";
+johnBluePrint.birthYear = 1990;
+johnBluePrint.gender = "Male";
+
+console.log(johnBluePrint);
+johnBluePrint.calculateAge();
+
+const merryBluePrint = Object.create(PersonBluePrint, {
+  name: {
+    value: "merry",
+  },
+  birthYear: { value: 1995 },
+  gender: { value: "Female" },
+});
+
+console.log(merryBluePrint);
+merryBluePrint.calculateAge();
+
+const markBluePrint = Object.create(PersonBluePrint);
+markBluePrint.init("Mark", "Male", 1996);
+
+console.log(markBluePrint);
+markBluePrint.calculateAge();
