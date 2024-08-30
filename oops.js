@@ -260,4 +260,39 @@ johnStatic.greet();
 // access the static method
 console.log(PersonStatic.getCount());
 
-console.log(johnStatic)
+console.log(johnStatic);
+
+// static method with function constructor
+function PersonFunctionConstructor(name, gender, birthYear) {
+  this.name = name;
+  this.gender = gender;
+  this.birthYear = birthYear;
+}
+
+PersonFunctionConstructor.prototype.calculateAge = function () {
+  const age = new Date().getFullYear() - this.birthYear;
+  console.log(`${this.name} - Age: ${age}`);
+};
+
+// attach static method
+PersonFunctionConstructor.greet = function () {
+  console.log("Hello, my name is " + this.name + "!");
+};
+
+const johnFunctionConstructor = new PersonFunctionConstructor(
+  "John",
+  "Male",
+  1980
+);
+
+console.log(johnFunctionConstructor);
+
+PersonFunctionConstructor.greet();
+johnFunctionConstructor.greet();
+
+// build in static methods in js
+/**
+ * Number.parseInt()
+ * Number.isNaN()
+ * Array.from()
+ */
