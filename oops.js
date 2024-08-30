@@ -394,3 +394,42 @@ console.log(RameshEmployee);
 RameshEmployee.calculateSalary();
 RameshEmployee.empDetails();
 RameshEmployee.calculateAge();
+
+/**
+ * Inheritance between classes.
+ */
+class MemberClass {
+  constructor(name, gender, birthYear) {
+    this.name = name;
+    this.gender = gender;
+    this.birthYear = birthYear;
+  }
+
+  calcAge() {
+    console.log(new Date().getFullYear() - this.birthYear);
+  }
+}
+
+class EmployeeClass extends MemberClass {
+  constructor(name, gender, birthYear, empId, salary) {
+    super(name, gender, birthYear); // super method call before access this property
+    this.empId = empId;
+    this.salary = salary;
+  }
+
+  empDetails() {
+    console.log(`Employee Name: ${this.name} - EmpId: ${this.empId}`);
+  }
+
+  empSalary() {
+    console.log(`Employee Name: ${this.name} - Salary: ${this.salary * 12}`);
+  }
+}
+
+const markEmployee = new EmployeeClass("Mark", "Male", 1990, 12001, 1000);
+
+console.log(markEmployee);
+
+markEmployee.empDetails();
+markEmployee.empSalary();
+markEmployee.calcAge();
