@@ -172,3 +172,92 @@ johnClass.greet();
 // 1.classes doesn't hoisted
 // 2.classes are a first class citizens
 // 3.classes are executed in strict mode
+
+/*
+  getters and setters method
+
+  Accessor properties are methods that are gets or sets the value
+  of an object's property.
+
+  1.getter property -> read the property value
+  2. setter property -> change the property value
+
+  Encapsulation: Hiding the data from the outside world
+  set and get the calculated value for a property
+*/
+
+let user = {
+  name: "John",
+  birthYear: 1990,
+  annualSalary: 12000,
+  get getAge() {
+    return new Date().getFullYear() - this.birthYear;
+  },
+  set setSalary(newSalary) {
+    if (newSalary < 0) {
+      console.error("Salary can't be negative");
+      return;
+    }
+    this.annualSalary = newSalary;
+  },
+};
+
+console.log(user);
+console.log(`Age: `, user.getAge);
+user.setSalary = 13000;
+console.log(user);
+
+let User = class {
+  constructor(name, password, role) {
+    this.name = name;
+    this.password = password;
+    this.role = role;
+  }
+
+  set setPassword(newPassword) {
+    if (newPassword.length < 8) {
+      console.error("Password must be at least 8 characters long");
+      return;
+    }
+    this.password = newPassword;
+  }
+};
+
+const markUser = new User("Mark", "12345678", "Developer");
+
+console.log(markUser);
+
+markUser.setPassword = "123456";
+
+console.log(markUser);
+
+/*
+  Static methods
+
+  Static methods always attach to the class
+  Instance methods always attach to the instances
+*/
+class PersonStatic {
+  static age = 20;
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  static getCount() {
+    return PersonStatic.age;
+  }
+
+  greet() {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+}
+
+const johnStatic = new PersonStatic("John");
+// access the instance method
+johnStatic.greet();
+
+// access the static method
+console.log(PersonStatic.getCount());
+
+console.log(johnStatic)
