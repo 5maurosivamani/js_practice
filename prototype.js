@@ -191,3 +191,118 @@ MyObject.__proto__ = object;
 console.log(MyObject.__proto__);
 
 console.log(MyObject.name, MyObject.city);
+
+function person(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+
+  // this.getFullName = function () {
+  //   return `${this.firstName} ${this.lastName}`;
+  // };
+}
+
+person.prototype.getFullName = function () {
+  return `${this.firstName} ${this.lastName}`;
+};
+
+person.prototype.getFirstName = function () {
+  return this.firstName;
+};
+
+person.prototype.age = 30;
+
+const john = new person("John", "Doe");
+
+console.log(john.firstName);
+console.log(john.lastName);
+console.log(john.getFullName());
+console.log(john.getFirstName());
+console.log(john.age);
+
+const ramesh = new person("Ramesh", "Kumar");
+
+console.log(ramesh.firstName);
+console.log(ramesh.lastName);
+console.log(ramesh.getFullName());
+console.log(ramesh.getFirstName());
+console.log(ramesh.age);
+
+function Job() {
+  this.pays = true;
+}
+
+// Job.prototype.print = function () {
+//   console.log(this.pays ? "Please Hire me!" : "No, Thank you");
+// };
+
+function TechJob(title, pays) {
+  Job.call(this);
+  this.title = title;
+  this.pays = pays;
+
+  console.log("Job: " + title);
+}
+
+TechJob.prototype = Object.create(Job.prototype);
+TechJob.prototype.constructor = TechJob;
+
+// TechJob.prototype.print = function () {
+//   console.log(this.title, this.pays ? "I wanted please" : "No");
+// };
+
+Object.prototype.print = function () {
+  console.log("I am an Object");
+};
+
+const Software = new Job();
+
+Software.print();
+
+const SoftwareJob2 = new TechJob("Js Programmer", false);
+
+SoftwareJob2.print();
+
+// functions are also a object
+function bear() {
+  console.log("Bear");
+}
+
+bear.type = "snow";
+
+bear();
+console.log(bear.type);
+
+// constructor function
+function Bear(type) {
+  this.type = type;
+}
+
+Bear.prototype.growl = function () {
+  console.log(this.type, "grrrr");
+}
+
+// prototype inherits
+function Grizzly() {
+  Bear.call(this, "grizzly");
+}
+
+// Object.prototype.growl = function () {
+//   console.log("grizzly grr from master object");
+// }
+Grizzly.prototype = Object.create(Bear.prototype);
+Grizzly.prototype.growl = function () {
+  console.log("Grizzly was ggrrr");
+}
+
+
+const grizzly = new Grizzly("grizzly");
+const polar = new Bear("polar");
+
+
+grizzly.growl = function () {
+  console.log("Grizzly was growling");
+}
+
+console.log(grizzly, polar);
+
+grizzly.growl()
