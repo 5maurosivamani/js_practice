@@ -471,3 +471,43 @@ markEmployeeObject.employeeInit("Mark", "Male", 1990, 10012, 1000);
 console.log(markEmployeeObject);
 
 markEmployeeObject.calcAge();
+
+/**
+ * Public and private properties in class
+ */
+
+class IncrementCounter {
+  #value = 0; // private property
+  counter = 0; // public property
+
+  // constructor() {}
+
+  increment() {
+    this.counter++;
+    this.#value++;
+  }
+
+  get getValue() {
+    this.#greet();
+    return this.#value;
+  }
+
+  // Private Method
+  #greet() {
+    console.log("Hello from private method");
+  }
+}
+
+const counter = new IncrementCounter();
+
+console.log(counter);
+
+console.log("private: ", counter.getValue);
+console.log("public:", counter.counter);
+
+counter.increment();
+
+console.log("private: ", counter.getValue);
+console.log("public:", counter.counter);
+
+// counter.greet(); private method cannot access from outside world
