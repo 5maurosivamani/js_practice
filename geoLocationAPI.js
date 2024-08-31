@@ -6,19 +6,19 @@
 if (navigator.geolocation) {
   console.log("Your browser supports the Geolocation API!");
 
-  //   navigator.geolocation.getCurrentPosition(success, error, {
-  //     // enableHighAccuracy: true,
-  //     timeout: 0,
-  //     maximumAge: 10 * 60 * 1000, // 0 means it will get the latest position
-  //   });
+  navigator.geolocation.getCurrentPosition(success, error, {
+    // enableHighAccuracy: true,
+    // timeout: 0,
+    maximumAge: 10 * 60 * 1000, // 0 means it will get the latest position
+  });
 
-  // geolocation.watchPosition method
-  const watcher = navigator.geolocation.watchPosition(success, error);
+  // // geolocation.watchPosition method
+  // const watcher = navigator.geolocation.watchPosition(success, error);
 
-  // clear watcher
-  setTimeout(function () {
-    navigator.geolocation.clearWatch(watcher);
-  }, 15000);
+  // // clear watcher
+  // setTimeout(function () {
+  //   navigator.geolocation.clearWatch(watcher);
+  // }, 15000);
 } else {
   console.log("Your browser does not support the Geolocation API!");
 }
@@ -28,7 +28,22 @@ function success(position) {
   const lat = position.coords.latitude;
   const lon = position.coords.longitude;
 
-  console.log(`https://www.google.com/maps/@${lat},${lon}`);
+  // map options
+  const mapOptions = {
+    center: [lat, lon],
+    zoom: 15,
+  };
+
+  // create a map
+  const map = L.map("map", mapOptions);
+
+  // create a tile layer
+  const layer = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+  );
+
+  // add the tile layer to the map
+  map.addLayer(layer);
 }
 
 /**
