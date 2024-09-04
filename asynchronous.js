@@ -292,10 +292,33 @@ const promise = new Promise((resolve, reject) => {
 //   }
 // );
 
-promise
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// promise
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+/**
+ * fetch API
+ *
+ * # fetch API is the modern way of sending the ajax request
+ * # It's always returning the promise
+ */
+
+const getCountry = function (countryName) {
+  fetch(`https://restcountries.com/v3.1/name/${countryName}`)
+    .then((res) => {
+      console.log(res);
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+getCountry("usa");
