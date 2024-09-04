@@ -172,83 +172,130 @@ Object.prototype.getValueString = function (type) {
  * Callback Hell
  */
 
-const countryDataContainer = document.getElementById("countries");
+// const countryDataContainer = document.getElementById("countries");
 
-let res;
+// let res;
 
-function displayCountry(countryData) {
-  const html = `
-    <div class="rounded-t shadow width-fit">
-          <img src='${
-            countryData?.flags?.png
-          }' class="rounded-t-md h-auto min-w-full" alt=${countryData?.name} />
-      <div class="p-2 py-3 pb-4">
-        <h2 class="text-xl font-semibold">${countryData?.name?.common}</h2>
-        <h4 class="text-gray-400 font-medium">${countryData?.region?.toUpperCase()}</h4>
-        <p class="text-gray-500"><span class="mr-2">👤</span> ${
-          countryData?.population
-        } people</p>
-        <p class="text-gray-500"><span class="mr-2">🎙️</span>${countryData?.languages?.getValueString()}</p>
-        <p class="text-gray-500"><span class="mr-2">💲</span>${countryData?.currencies?.getValueString(
-          "key"
-        )}</p>
-      </div>
-    </div>
-    `;
+// function displayCountry(countryData) {
+//   const html = `
+//     <div class="rounded-t shadow width-fit">
+//           <img src='${
+//             countryData?.flags?.png
+//           }' class="rounded-t-md h-auto min-w-full" alt=${countryData?.name} />
+//       <div class="p-2 py-3 pb-4">
+//         <h2 class="text-xl font-semibold">${countryData?.name?.common}</h2>
+//         <h4 class="text-gray-400 font-medium">${countryData?.region?.toUpperCase()}</h4>
+//         <p class="text-gray-500"><span class="mr-2">👤</span> ${
+//           countryData?.population
+//         } people</p>
+//         <p class="text-gray-500"><span class="mr-2">🎙️</span>${countryData?.languages?.getValueString()}</p>
+//         <p class="text-gray-500"><span class="mr-2">💲</span>${countryData?.currencies?.getValueString(
+//           "key"
+//         )}</p>
+//       </div>
+//     </div>
+//     `;
 
-  // convert string to html
-  countryDataContainer.insertAdjacentElement("beforeend", stringToHTML(html));
-}
+//   // convert string to html
+//   countryDataContainer.insertAdjacentElement("beforeend", stringToHTML(html));
+// }
 
-function makeAjaxRequest(countryName) {
-  // create XMLHttpRequest
+// function makeAjaxRequest(countryName) {
+//   // create XMLHttpRequest
+//   const xhr = new XMLHttpRequest();
+
+//   // create a request
+//   xhr.open("GET", `https://restcountries.com/v3.1/name/${countryName}`, true);
+
+//   // send request
+//   xhr.send();
+
+//   return xhr;
+// }
+
+// function getCountry() {
+//   const req1 = makeAjaxRequest("usa");
+
+//   req1.addEventListener("load", function () {
+//     // convert JSON string to JS Object
+//     const [countryData] = JSON.parse(req1.responseText);
+
+//     displayCountry(countryData);
+
+//     const req2 = makeAjaxRequest("india");
+
+//     req2.addEventListener("load", function () {
+//       // convert JSON string to JS Object
+//       const [countryData] = JSON.parse(req2.responseText);
+
+//       displayCountry(countryData);
+
+//       const req3 = makeAjaxRequest("brazil");
+
+//       req3.addEventListener("load", function () {
+//         // convert JSON string to JS Object
+//         const [countryData] = JSON.parse(req3.responseText);
+
+//         displayCountry(countryData);
+
+//         const req4 = makeAjaxRequest("italy");
+
+//         req4.addEventListener("load", function () {
+//           // convert JSON string to JS Object
+//           const [countryData] = JSON.parse(req4.responseText);
+
+//           displayCountry(countryData);
+//         });
+//       });
+//     });
+//   });
+// }
+
+// getCountry();
+
+/**
+ * Promise
+ */
+
+// produce
+const promise = new Promise((resolve, reject) => {
+  console.log("executer function executed!");
+
   const xhr = new XMLHttpRequest();
-
-  // create a request
-  xhr.open("GET", `https://restcountries.com/v3.1/name/${countryName}`, true);
-
-  // send request
+  xhr.open("GET", "db.json", true);
   xhr.send();
 
-  return xhr;
-}
+  xhr.onload = function () {
+    if (this.statusText === "OK") {
+      resolve(this.responseText);
+    } else {
+      reject(new Error("Request failed with some reason. Please try again!"));
+    }
+  };
+});
 
-function getCountry() {
-  const req1 = makeAjaxRequest("usa");
+// consume
+// promise.then((res) => {
+//   console.log(res);
+// });
 
-  req1.addEventListener("load", function () {
-    // convert JSON string to JS Object
-    const [countryData] = JSON.parse(req1.responseText);
+// promise.catch((err) => {
+//   console.log(err);
+// });
 
-    displayCountry(countryData);
+// promise.then(
+//   (res) => {
+//     console.log(res);
+//   },
+//   (err) => {
+//     console.log(err);
+//   }
+// );
 
-    const req2 = makeAjaxRequest("india");
-
-    req2.addEventListener("load", function () {
-      // convert JSON string to JS Object
-      const [countryData] = JSON.parse(req2.responseText);
-
-      displayCountry(countryData);
-
-      const req3 = makeAjaxRequest("brazil");
-
-      req3.addEventListener("load", function () {
-        // convert JSON string to JS Object
-        const [countryData] = JSON.parse(req3.responseText);
-
-        displayCountry(countryData);
-
-        const req4 = makeAjaxRequest("italy");
-
-        req4.addEventListener("load", function () {
-          // convert JSON string to JS Object
-          const [countryData] = JSON.parse(req4.responseText);
-
-          displayCountry(countryData);
-        });
-      });
-    });
+promise
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log(err);
   });
-}
-
-getCountry();
