@@ -12,7 +12,7 @@ class Cat {
 
 const duck = new Duck();
 const cat = new Cat();
-
+  
 const makeDucksType = (possibleDuckImposter) => possibleDuckImposter.type();
 
 [duck, cat].forEach((obj) => makeDucksType(obj));

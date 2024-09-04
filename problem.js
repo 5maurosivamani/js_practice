@@ -33,20 +33,27 @@ let result = "";
 // const nameArray = name.split(""); // Time Complesity: n
 
 const checkVowel = (char) => {
-  switch (char.toUpperCase()) {
-    case "A":
-      return true;
-    case "E":
-      return true;
-    case "I":
-      return true;
-    case "O":
-      return true;
-    case "U":
-      return true;
-    default:
-      return false;
-  }
+  // switch (char.toUpperCase()) {
+  //   case "A":
+  //     return true;
+  //   case "E":
+  //     return true;
+  //   case "I":
+  //     return true;
+  //   case "O":
+  //     return true;
+  //   case "U":
+  //     return true;
+  //   default:
+  //     return false;
+  // }
+
+  const ch = char.toLowerCase(); // Time Complexity: 1
+
+  if(ch === 'a' || ch ==='e' || ch ==='i' || ch === 'o' || ch === 'u')
+    return true;
+  else
+   return false;
 };
 
 // Time Complesity: n
