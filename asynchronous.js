@@ -78,7 +78,7 @@ function getProducts() {
       const response = JSON.parse(this.responseText);
       const { products } = response;
 
-    //   console.log(products);
+      //   console.log(products);
 
       //  6. Show Products
       products.forEach((product) => {
@@ -103,3 +103,68 @@ function stringToHTML(str) {
   const doc = parser.parseFromString(str, "text/html");
   return doc.body;
 }
+
+// convert string from object
+Object.prototype.getValueString = function (type) {
+  const res = Object.entries(this);
+
+  if (type === "key") {
+    return res[0][0];
+  } else {
+    return res[0][1];
+  }
+};
+
+/**
+ * XMLHttpRequest to WEB API
+ */
+const countryDataContainer = document.getElementById("countries");
+
+let res;
+
+function createCountry(countryData) {
+  const html = `
+    <div class="rounded-t shadow width-fit">
+          <img src='${countryData?.flags?.png}' class="rounded-t-md h-auto min-w-full" alt=${
+    countryData?.name
+  } />
+      <div class="p-2 py-3 pb-4">
+        <h2 class="text-xl font-semibold">${countryData?.name?.common}</h2>
+        <h4 class="text-gray-400 font-medium">${countryData?.region?.toUpperCase()}</h4>
+        <p class="text-gray-500"><span class="mr-2">👤</span> ${
+          countryData?.population
+        } people</p>
+        <p class="text-gray-500"><span class="mr-2">🎙️</span>${countryData?.languages?.getValueString()}</p>
+        <p class="text-gray-500"><span class="mr-2">💲</span>${countryData?.currencies?.getValueString(
+          "key"
+        )}</p>
+      </div>
+    </div>
+    `;
+
+  // convert string to html
+  countryDataContainer.insertAdjacentElement("beforeend", stringToHTML(html));
+}
+
+function getCountry(countryName) {
+  // create XMLHttpRequest
+  const xhr = new XMLHttpRequest();
+
+  // create a request
+  xhr.open("GET", `https://restcountries.com/v3.1/name/${countryName}`, true);
+
+  // send request
+  xhr.send();
+
+  xhr.addEventListener("load", function () {
+    // convert JSON string to JS Object
+    const [countryData] = JSON.parse(xhr.responseText);
+
+    createCountry(countryData);
+  });
+}
+
+getCountry("usa");
+getCountry("india");
+getCountry("italy");
+
