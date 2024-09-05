@@ -118,33 +118,33 @@ Object.prototype.getValueString = function (type) {
 /**
  * XMLHttpRequest to WEB API
  */
-// const countryDataContainer = document.getElementById("countries");
+const countryDataContainer = document.getElementById("countries");
 
 // let res;
 
-// function createCountry(countryData) {
-//   const html = `
-//     <div class="rounded-t shadow width-fit">
-//           <img src='${countryData?.flags?.png}' class="rounded-t-md h-auto min-w-full" alt=${
-//     countryData?.name
-//   } />
-//       <div class="p-2 py-3 pb-4">
-//         <h2 class="text-xl font-semibold">${countryData?.name?.common}</h2>
-//         <h4 class="text-gray-400 font-medium">${countryData?.region?.toUpperCase()}</h4>
-//         <p class="text-gray-500"><span class="mr-2">👤</span> ${
-//           countryData?.population
-//         } people</p>
-//         <p class="text-gray-500"><span class="mr-2">🎙️</span>${countryData?.languages?.getValueString()}</p>
-//         <p class="text-gray-500"><span class="mr-2">💲</span>${countryData?.currencies?.getValueString(
-//           "key"
-//         )}</p>
-//       </div>
-//     </div>
-//     `;
+function createCountry(countryData) {
+  const html = `
+    <div class="rounded-t shadow width-fit">
+          <img src='${
+            countryData?.flags?.png
+          }' class="rounded-t-md h-auto min-w-full" alt=${countryData?.name} />
+      <div class="p-2 py-3 pb-4">
+        <h2 class="text-xl font-semibold">${countryData?.name?.common}</h2>
+        <h4 class="text-gray-400 font-medium">${countryData?.region?.toUpperCase()}</h4>
+        <p class="text-gray-500"><span class="mr-2">👤</span> ${
+          countryData?.population
+        } people</p>
+        <p class="text-gray-500"><span class="mr-2">🎙️</span>${countryData?.languages?.getValueString()}</p>
+        <p class="text-gray-500"><span class="mr-2">💲</span>${countryData?.currencies?.getValueString(
+          "key"
+        )}</p>
+      </div>
+    </div>
+    `;
 
-//   // convert string to html
-//   countryDataContainer.insertAdjacentElement("beforeend", stringToHTML(html));
-// }
+  // convert string to html
+  countryDataContainer.insertAdjacentElement("beforeend", stringToHTML(html));
+}
 
 // function getCountry(countryName) {
 //   // create XMLHttpRequest
@@ -307,18 +307,55 @@ const promise = new Promise((resolve, reject) => {
  * # It's always returning the promise
  */
 
-const getCountry = function (countryName) {
-  fetch(`https://restcountries.com/v3.1/name/${countryName}`)
-    .then((res) => {
-      console.log(res);
-      return res.json();
-    })
+// const getCountry = function (countryName) {
+//   fetch(`https://restcountries.com/v3.1/name/${countryName}`)
+//     .then((res) => {
+//       console.log(res);
+//       return res.json();
+//     })
+//     .then((data) => {
+//       createCountry(data);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
+// getCountry("usa");
+
+/**
+ * Avoid Callback hell with promise
+ */
+function getCountry() {
+  fetch(`https://restcountries.com/v3.1/name/usa`)
+    .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      createCountry(data[0]);
+      return fetch(`https://restcountries.com/v3.1/name/india`);
     })
+    .then((res) => res.json())
+    .then((data) => {
+      createCountry(data[0]);
+      return fetch(`https://restcountries.com/v3.1/name/brazil`);
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      createCountry(data[0]);
+    })
+    // handling errors
     .catch((err) => {
       console.log(err);
+      countryDataContainer.insertAdjacentElement(
+        "beforebegin",
+        stringToHTML(
+          `<p class="text-red-400">Something went wrong! Error: ${err.message}. Please try again later!</p>`
+        )
+      );
+    }).finally(function(){
+      console.log("Finally Called!")
     });
-};
+}
 
-getCountry("usa");
+document
+  .getElementById("load-countries-btn")
+  .addEventListener("click", getCountry);
