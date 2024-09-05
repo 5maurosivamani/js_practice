@@ -328,17 +328,17 @@ const promise = new Promise((resolve, reject) => {
  */
 function getCountry() {
   fetch(`https://restcountries.com/v3.1/name/usa`)
-    .then((res) => res.json())
+    .then((res) => handleResponse(res))
     .then((data) => {
       createCountry(data[0]);
-      return fetch(`https://restcountries.com/v3.1/name/india`);
+      return fetch(`https://restcountries.com/v3.1/name/abc`);
     })
-    .then((res) => res.json())
+    .then((res) => handleResponse(res))
     .then((data) => {
       createCountry(data[0]);
       return fetch(`https://restcountries.com/v3.1/name/brazil`);
     })
-    .then((res) => res.json())
+    .then((res) => handleResponse(res))
     .then((data) => {
       createCountry(data[0]);
     })
@@ -351,11 +351,21 @@ function getCountry() {
           `<p class="text-red-400">Something went wrong! Error: ${err.message}. Please try again later!</p>`
         )
       );
-    }).finally(function(){
-      console.log("Finally Called!")
+    })
+    .finally(function () {
+      console.log("Finally Called!");
     });
 }
 
 document
   .getElementById("load-countries-btn")
   .addEventListener("click", getCountry);
+
+// manually throw error
+function handleResponse(response) {
+  if (!response.ok) {
+    throw new Error(`Error while loading country details (${response.status})`);
+  }
+
+  return response.json();
+}
