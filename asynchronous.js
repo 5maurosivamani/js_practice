@@ -400,26 +400,26 @@ function getPosition() {
 
 const API_KEY = "101621770800476e15949904x348";
 
-getPosition()
-  .then((position) => {
-    const { latitude: lat, longitude: lon } = position.coords;
-    return fetch(
-      `https://geocode.xyz/${lat},${lon}?geoit=json&auth=${API_KEY}`
-    );
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    // console.log(data)
-    return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
-  })
-  .then((res) => res.json())
-  .then((countryData) => {
-    console.log(countryData);
-    createCountry(countryData[0]);
-  })
-  .catch((err) => console.log(err));
+// getPosition()
+//   .then((position) => {
+//     const { latitude: lat, longitude: lon } = position.coords;
+//     return fetch(
+//       `https://geocode.xyz/${lat},${lon}?geoit=json&auth=${API_KEY}`
+//     );
+//   })
+//   .then((response) => {
+//     return response.json();
+//   })
+//   .then((data) => {
+//     // console.log(data)
+//     return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
+//   })
+//   .then((res) => res.json())
+//   .then((countryData) => {
+//     console.log(countryData);
+//     createCountry(countryData[0]);
+//   })
+//   .catch((err) => console.log(err));
 
 // promising the xmlHTTP Request
 function makeAjaxRequest(url) {
@@ -444,12 +444,113 @@ getPosition()
     makeAjaxRequest(
       `https://geocode.xyz/${lat},${lon}?geoit=json&auth=${API_KEY}`
     )
-      .then(res => JSON.parse(res))
-      .then(data => {
-        console.log(data)
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        // console.log(data);
       })
       .catch((err) => console.log(err));
   })
   .catch((err) => {
-    console.log(err)
+    console.log(err);
   });
+
+/***
+ * Async and Await
+ */
+async function getUserCountryDetails() {
+  try {
+    // get user coordinates
+    const position = await getPosition();
+    const { latitude: lat, longitude: lon } = position.coords;
+
+    // get country name use coordinates
+    const geoResponse = await fetch(
+      `https://geocode.xyz/${lat},${lon}?geoit=json&auth=${API_KEY}`
+    );
+    const geoData = await geoResponse.json();
+
+    // get country data use country name
+    const countryResponse = await fetch(
+      `https://restcountries.com/v3.11/name/${geoData.country}`
+    );
+    const countryData = await countryResponse.json();
+
+    // display country
+    createCountry(countryData[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+document
+  .getElementById("load-countries-btn-1")
+  .addEventListener("click", getUserCountryDetails);
+
+async function getUserCountry() {
+  const position = await getPosition();
+  const { latitude: lat, longitude: lon } = position.coords;
+
+  const geoResponse = await fetch(
+    `https://geocode.xyz/${lat},${lon}?geoit=json&auth=${API_KEY}`
+  );
+  const geoData = await geoResponse.json();
+
+  const countryResponse = await fetch(
+    `https://restcountries.com/v3.11/name/${geoData2.country}`
+  );
+  const countryData = await countryResponse.json();
+
+  return geoData;
+}
+
+async function main() {
+  console.log("Fetching country data...");
+  const userData = await getUserCountry();
+  console.log(
+    `You are living in ${userData.city}, ${userData.state}, ${userData.country}`
+  );
+  console.log("Fetching completed.");
+}
+
+asyncErrorHandling(main);
+
+// handle Error
+async function asyncErrorHandling(fun) {
+  try {
+    await fun();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// running parallel requests
+function getData(url, error = "Something went wrong!") {
+  return fetch(url).then((res) => {
+    if (!res.ok) {
+      throw new Error(`${error} ${error.status}`);
+    }
+    return res.json();
+  });
+}
+
+function getCountryString(countryData) {
+  if(Array.isArray(countryData)){
+    countryData = countryData[0];
+  }
+
+  return `${countryData.name.common} ${countryData.capital}`
+}
+
+asyncErrorHandling(async function () {
+  const requests = [
+    getData("https://restcountries.com/v3.1/name/usa"),
+    getData("https://restcountries.com/v3.1/name/india"),
+    getData("https://restcountries.com/v3.1/name/france"),
+    getData("https://restcountries.com/v3.1/name/germany"),
+    getData("https://restcountries.com/v3.1/name/russia"),
+  ];
+  const data = await Promise.all(requests);
+
+  const countryString = data.map(getCountryString);
+  console.log(countryString);
+});
