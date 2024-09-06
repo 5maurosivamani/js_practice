@@ -519,7 +519,7 @@ async function asyncErrorHandling(fun) {
   try {
     await fun();
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -534,11 +534,11 @@ function getData(url, error = "Something went wrong!") {
 }
 
 function getCountryString(countryData) {
-  if(Array.isArray(countryData)){
+  if (Array.isArray(countryData)) {
     countryData = countryData[0];
   }
 
-  return `${countryData.name.common} ${countryData.capital}`
+  return `${countryData.name.common} ${countryData.capital}`;
 }
 
 asyncErrorHandling(async function () {
@@ -553,4 +553,39 @@ asyncErrorHandling(async function () {
 
   const countryString = data.map(getCountryString);
   console.log(countryString);
+});
+
+// Promise.race
+// it's return the first settled promise either resolved or rejected
+
+asyncErrorHandling(async function () {
+  const requests = [
+    Promise.reject("rejected promise"),
+    getData("https://restcountries.com/v3.1/name/usa"),
+    getData("https://restcountries.com/v3.1/name/india"),
+    getData("https://restcountries.com/v3.1/name/france"),
+    getData("https://restcountries.com/v3.1/name/germany"),
+    getData("https://restcountries.com/v3.1/name/russia"),
+  ];
+  const data = await Promise.race(requests);
+
+  console.log(data);
+});
+
+// Real world example of race method
+function timeout(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error("Request timed out"));
+    }, ms);
+  });
+}
+
+asyncErrorHandling(async function () {
+  const requests = [
+    getData(`https://restcountries.com/v3.1/name/russia`),
+    timeout(569),
+  ];
+  const res = await Promise.race(requests);
+  console.log(res);
 });
