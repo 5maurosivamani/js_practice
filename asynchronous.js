@@ -589,3 +589,27 @@ asyncErrorHandling(async function () {
   const res = await Promise.race(requests);
   console.log(res);
 });
+
+// Promise allSettled
+asyncErrorHandling(async function () {
+  const requests = [
+    getData(`https://restcountries.com/v3.1/name/russia`),
+    getData(`https://restcountries.com/v3.1/name/india`),
+    getData(`https://restcountries.com/v3.1/name/usa`),
+    timeout(2000),
+  ];
+  const res = await Promise.allSettled(requests);
+  console.log(res);
+});
+
+// Promise any
+//  it returns a first resolved promise
+asyncErrorHandling(async function () {
+  const requests = [
+    Promise.reject("data 1"),
+    Promise.reject("data 2"),
+    Promise.resolve("data 3"),
+  ];
+  const res = await Promise.any(requests);
+  console.log("any", res);
+});
