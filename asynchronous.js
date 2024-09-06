@@ -369,3 +369,87 @@ function handleResponse(response) {
 
   return response.json();
 }
+
+/**
+ * event Loop
+ *  */
+console.log("code Starts here");
+
+setTimeout(() => {
+  console.log("setTimeout");
+}, 0);
+
+Promise.resolve("Promise").then((data) => {
+  console.log(data);
+
+  // for(let i=0; i< 10000000000; i++){
+  //   // i*i;
+  // }
+});
+
+console.log("Code ends here!");
+
+/**
+ * Promisified the geolocation API
+ */
+function getPosition() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+}
+
+const API_KEY = "101621770800476e15949904x348";
+
+getPosition()
+  .then((position) => {
+    const { latitude: lat, longitude: lon } = position.coords;
+    return fetch(
+      `https://geocode.xyz/${lat},${lon}?geoit=json&auth=${API_KEY}`
+    );
+  })
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    // console.log(data)
+    return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
+  })
+  .then((res) => res.json())
+  .then((countryData) => {
+    console.log(countryData);
+    createCountry(countryData[0]);
+  })
+  .catch((err) => console.log(err));
+
+// promising the xmlHTTP Request
+function makeAjaxRequest(url) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.send();
+    xhr.onload = function () {
+      if (this.status === 200) {
+        resolve(this.responseText);
+      } else {
+        reject(new Error(`Request failed with some reason. Please try again!`));
+      }
+    };
+    xhr.onerror = reject;
+  });
+}
+
+getPosition()
+  .then((position) => {
+    const { latitude: lat, longitude: lon } = position.coords;
+    makeAjaxRequest(
+      `https://geocode.xyz/${lat},${lon}?geoit=json&auth=${API_KEY}`
+    )
+      .then(res => JSON.parse(res))
+      .then(data => {
+        console.log(data)
+      })
+      .catch((err) => console.log(err));
+  })
+  .catch((err) => {
+    console.log(err)
+  });
