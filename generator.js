@@ -36,3 +36,19 @@ console.log(genId.next(6));
 console.log(genId.next());
 console.log(genId.next());
 console.log(genId.next(2));
+
+function* fibonacciSequence() {
+  let a = 0,
+    b = 1;
+  while (true) {
+    yield a;
+    [a, b] = [b, a + b];
+  }
+}
+
+const fibonacciIterator = fibonacciSequence();
+
+// Let's print the first 10 Fibonacci numbers
+for (let i = 0; i < 10; i++) {
+  console.log(fibonacciIterator.next().value);
+}
