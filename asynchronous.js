@@ -1,5 +1,9 @@
 "use strict";
 
+window.onerror = function (err) {
+  console.log("global: ", err);
+};
+
 /**
  * synchronous
  * */
