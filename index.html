@@ -4,13 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"
+    />
   </head>
-  <body class="bg-black p-5">
+  <body class="bg-black p-5 text-white">
+    <div id="node">
+      <h2>empty node</h2>
+    </div>
+
+    <div class="btn-group" id="btn-group">
+      <button id="grow" class="bg-white px-4 py-2 rounded text-black">
+        Click me
+      </button>
+      <button id="remove" class="bg-white px-4 py-2 rounded text-black">
+        Remove me
+      </button>
+    </div>
 
     <!-- <script src="./oops.js"></script> -->
     <!-- <script src="./strictmode.js"></script> -->
     <!-- <script src="./IIFE.js"></script> -->
-     <script type="module" src="./main.js"></script>
+    <script type="module" src="./main.js"></script>
   </body>
 </html>
