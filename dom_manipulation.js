@@ -377,9 +377,30 @@
   outerDiv.addEventListener(
     "click",
     function (e) {
-        e.stopPropagation();
+      e.stopPropagation();
       console.log("Click on outer Div", e);
     },
     true
   );
+}
+
+// Event Delegation
+{
+  // handle a click event on each button
+  const buttons = document.querySelectorAll(".event-delegation button");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      console.log(event.target.innerText);
+    });
+  });
+
+  // use EventDelegation
+  const container = document.querySelector(".event-delegation");
+
+  container.addEventListener("click", (event) => {
+    if (event.target.tagName === "BUTTON") {
+      console.log(event.target.innerText);
+    }
+  });
 }
